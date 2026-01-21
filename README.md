@@ -24,6 +24,9 @@ Les objectifs principaux sont :
 ---
 
 ## 🏗️ Architecture générale du système
+<img width="862" height="528" alt="image" src="https://github.com/user-attachments/assets/88bf5485-0c52-415d-b320-d5c5d07d443a" />
+<img width="1280" height="960" alt="image" src="https://github.com/user-attachments/assets/e3675567-59ef-4089-be81-44229fbd330b" />
+
 
 Le datacenter est divisé en **trois zones de sécurité** :
 - 🟢 **Zone verte** : accès ouvert
