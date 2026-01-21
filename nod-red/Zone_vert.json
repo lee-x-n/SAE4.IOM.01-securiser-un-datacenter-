@@ -1,0 +1,259 @@
+[
+    {
+        "id": "2bbde5de8d676ea0",
+        "type": "tab",
+        "label": "Zone vert",
+        "disabled": true,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a4ea62159c509979",
+        "type": "mqtt in",
+        "z": "2bbde5de8d676ea0",
+        "name": "",
+        "topic": "capteur/temperature/surveillance",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "6ddfcaba62ed555c",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 200,
+        "wires": [
+            [
+                "adca7759fc1a52a9",
+                "3da91ab6208e02c1",
+                "b1585a5539a20fd1"
+            ]
+        ]
+    },
+    {
+        "id": "adca7759fc1a52a9",
+        "type": "debug",
+        "z": "2bbde5de8d676ea0",
+        "name": "debug 17",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "3da91ab6208e02c1",
+        "type": "influxdb out",
+        "z": "2bbde5de8d676ea0",
+        "influxdb": "1dd4782fe68705c7",
+        "name": "",
+        "measurement": "mmr",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "Lidian",
+        "bucket": "Temp",
+        "x": 550,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "b1585a5539a20fd1",
+        "type": "function",
+        "z": "2bbde5de8d676ea0",
+        "name": "function 12",
+        "func": "if (msg.payload.temperature > 30){\n    msg.topic = \"Alerte températaure\";\n    msg.payload = \"Température élevéeen salle de surveillance : 40°C !\";\n    return msg;\n}\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 420,
+        "wires": [
+            [
+                "05a5dc12f4778777",
+                "06ae03cacda28730",
+                "4bc14b5fe2369e0b"
+            ]
+        ]
+    },
+    {
+        "id": "06ae03cacda28730",
+        "type": "ui_toast",
+        "z": "2bbde5de8d676ea0",
+        "position": "top right",
+        "displayTime": "3",
+        "highlight": "pink",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": true,
+        "className": "",
+        "topic": "Alerte Température en salle de surveillance !",
+        "name": "Alerte Température !",
+        "x": 560,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "05a5dc12f4778777",
+        "type": "http request",
+        "z": "2bbde5de8d676ea0",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.callmebot.com/whatsapp.php?phone=33766489074&text=Température+élevée+en+salle+de+surveillance&apikey=5438638",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 530,
+        "y": 460,
+        "wires": [
+            [
+                "9b379c07b5509c22"
+            ]
+        ]
+    },
+    {
+        "id": "9b379c07b5509c22",
+        "type": "debug",
+        "z": "2bbde5de8d676ea0",
+        "name": "debug 18",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "4bc14b5fe2369e0b",
+        "type": "e-mail",
+        "z": "2bbde5de8d676ea0",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "authtype": "BASIC",
+        "saslformat": true,
+        "token": "oauth2Response.access_token",
+        "secure": true,
+        "tls": true,
+        "name": "lidiansae411@gmail.com",
+        "dname": "Mail",
+        "x": 510,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "3527a8164d655352",
+        "type": "inject",
+        "z": "2bbde5de8d676ea0",
+        "name": "Déclencher une température élevée",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"temperature\": 40, \"humidite\": 51.90}",
+        "payloadType": "json",
+        "x": 220,
+        "y": 100,
+        "wires": [
+            [
+                "8af3089ca35bb171"
+            ]
+        ]
+    },
+    {
+        "id": "8af3089ca35bb171",
+        "type": "mqtt out",
+        "z": "2bbde5de8d676ea0",
+        "name": "",
+        "topic": "capteur/temperature/surveillance",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "6ddfcaba62ed555c",
+        "x": 540,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "6ddfcaba62ed555c",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.1.100",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "1dd4782fe68705c7",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "Temp",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://192.168.1.130:8086",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    }
+]
